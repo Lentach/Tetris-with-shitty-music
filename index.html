@@ -1,0 +1,67 @@
+<html>
+<head>
+  <title>Tetris Clone</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="game-container">
+    <div id="start-screen">
+      <button id="start-button">Start Game</button>
+    </div>
+    <canvas id="tetrisCanvas"></canvas>
+    <div id="info-panel">
+      <div class="next-queue">
+        <h3>Next</h3>
+        <canvas id="nextCanvas"></canvas>
+      </div>
+      <div class="hold-piece">
+        <h3>Hold</h3>
+        <canvas id="holdCanvas"></canvas>
+      </div>
+      <div class="stats">
+        <div>Score: <span id="scoreDisplay">0</span></div>
+        <div>Level: <span id="levelDisplay">1</span></div>
+        <div>Lines: <span id="linesDisplay">0</span></div>
+      </div>
+      <div class="key-controls">
+        <div class="key-control" id="leftKey">
+          <div class="key">←</div>
+          <div>Move Left</div>
+        </div>
+        <div class="key-control" id="rightKey">
+          <div class="key">→</div>
+          <div>Move Right</div>
+        </div>
+        <div class="key-control" id="downKey">
+          <div class="key">↓</div>
+          <div>Soft Drop</div>
+        </div>
+        <div class="key-control" id="upKey">
+          <div class="key">↑</div>
+          <div>Rotate</div>
+        </div>
+        <div class="key-control" id="spaceKey">
+          <div class="key">Space</div>
+          <div>Hard Drop</div>
+        </div>
+        <div class="key-control" id="xKey">
+          <div class="key">X</div>
+          <div>Hold</div>
+        </div>
+        <div class="key-control" id="pKey">
+          <div class="key">P</div>
+          <div>Pause</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="importmap">
+    {
+      "imports": {
+        "tone": "https://unpkg.com/tone@14.7.77/build/Tone.js"
+      }
+    }
+  </script>
+  <script src="js/main.js" type="module"></script>
+</body>
+</html>

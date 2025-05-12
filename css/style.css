@@ -1,0 +1,302 @@
+body {
+  margin: 0;
+  padding: 20px;
+  background: #111;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+#game-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  background: #222;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  max-width: 100%;
+  box-sizing: border-box;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+#tetrisCanvas {
+  background: #000;
+  border: 2px solid #444;
+  /* Ensure canvas takes up primary space */
+  width: min(450px, 90vw); /* Base width, adjust as needed */
+  height: min(900px, 180vw); /* Base height, adjust as needed */
+  max-height: 90vh; /* Prevent excessive height on tall screens */
+  flex-shrink: 0; /* Prevent canvas from shrinking */
+}
+
+#info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 120px; /* Minimum useful width */
+  max-width: 200px; /* Limit max width on large screens */
+  width: min(25vw, 200px); /* Start wider on smaller screens up to max */
+  margin-left: 10px;
+  flex-shrink: 1; /* Allow info panel to shrink */
+  flex-grow: 1; /* Allow info panel to grow within limits */
+}
+
+#nextCanvas, #holdCanvas {
+  background: #000;
+  border: 1px solid #444;
+  margin-top: 5px;
+  /* Set display size to match JS drawing size (4 * 45 = 180px) */
+  width: 180px;
+  height: 180px;
+  /* Ensure they don't overflow their parent */
+  max-width: 100%;
+  max-height: 100%;
+  /* Center the canvases if their container is wider */
+  display: block; /* Remove extra space below canvas */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.next-queue, .hold-piece, .stats {
+  background: #333;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%; /* Take full width of the constrained info-panel */
+  box-sizing: border-box;
+}
+
+h3 {
+  margin: 0;
+  color: #888;
+  font-size: clamp(0.8em, 2vw, 0.9em);
+}
+
+.stats {
+  font-size: clamp(0.8em, 2vw, 0.9em);
+}
+
+.stats div {
+  margin: 5px 0;
+}
+
+span {
+  color: #0f0;
+}
+
+#start-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 10;
+  width: min(80vw, 300px);
+}
+
+#start-button {
+  background: #0f0;
+  color: #000;
+  border: none;
+  padding: clamp(10px, 3vw, 15px) clamp(20px, 5vw, 30px);
+  font-size: clamp(1em, 3vw, 1.2em);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+#start-button:hover {
+  background: #0c0;
+}
+
+.key-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  padding: 10px;
+  background: #333;
+  border-radius: 5px;
+  margin-top: auto;
+  width: 100%; /* Take full width of the constrained info-panel */
+  box-sizing: border-box;
+}
+
+.key-control {
+  padding: 5px 8px;
+  background: #444;
+  border-radius: 4px;
+  color: #888;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: clamp(40px, 8vw, 60px);
+  font-size: clamp(0.7em, 1.5vw, 0.8em);
+}
+
+.key-control .key {
+  font-weight: bold;
+  margin-bottom: 2px;
+  color: #fff;
+}
+
+.key-control.active {
+  background: #666;
+  color: #fff;
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  #game-container {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  #info-panel {
+    margin-left: 0;
+    flex-direction: row; /* Switch to row layout below canvas */
+    flex-wrap: wrap; /* Allow contents to wrap */
+    justify-content: space-around; /* Distribute items */
+    width: 100%; /* Take full width below canvas */
+    max-width: unset; /* Remove max-width constraint in this layout */
+    min-width: unset; /* Remove min-width constraint */
+  }
+
+  .next-queue, .hold-piece, .stats, .key-controls {
+    flex: 1 1 auto; /* Allow items to grow and shrink */
+    width: auto; /* Override width: 100% to work with flex */
+  }
+
+  .stats {
+    flex: 1 1 100%; /* Force stats onto its own row */
+    text-align: center;
+  }
+
+  .key-controls {
+    order: 1; /* Puts key controls at the bottom */
+    margin-top: 10px;
+    flex: 1 1 100%; /* Force keys onto its own row */
+  }
+
+  #nextCanvas, #holdCanvas {
+      width: clamp(80px, 15vw, 120px); /* Adjust canvas size for smaller screens in row layout */
+      height: clamp(80px, 15vw, 120px);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 5px;
+  }
+
+  #game-container {
+    padding: 5px;
+  }
+
+  .key-control {
+    padding: 3px 6px;
+  }
+
+  #nextCanvas, #holdCanvas {
+      width: clamp(60px, 18vw, 100px); /* Further adjust canvas size for very small screens */
+      height: clamp(60px, 18vw, 100px);
+  }
+}
+
+/* Portrait orientation adjustments */
+@media (orientation: portrait) {
+  #tetrisCanvas {
+    width: min(450px, 95vw);
+    height: min(900px, 190vw);
+    max-height: 70vh; /* Keep canvas from being too tall */
+  }
+
+  #game-container {
+    flex-direction: column; /* Stack items */
+    align-items: center; /* Center items horizontally */
+  }
+
+  #info-panel {
+     margin-top: 10px; /* Add space between canvas and info panel */
+     flex-direction: row; /* Info panel contents in a row */
+     flex-wrap: wrap; /* Allow info panel contents to wrap */
+     justify-content: space-around; /* Distribute info panel contents */
+     width: 100%; /* Take full width below the canvas */
+     max-width: unset; /* Remove max-width constraint in column layout */
+     min-width: unset; /* Remove min-width constraint */
+  }
+
+   .next-queue, .hold-piece, .stats, .key-controls {
+     flex: 1 1 auto; /* Allow items to grow/shrink in the row */
+     width: auto; /* Override width: 100% */
+     min-width: unset; /* Allow shrinkage */
+   }
+
+   .stats {
+     flex: 1 1 100%; /* Stats always take full row */
+     text-align: center;
+   }
+
+   .key-controls {
+     order: 1; /* Keys at bottom */
+     margin-top: 10px;
+     flex: 1 1 100%; /* Keys take full row */
+   }
+
+   #nextCanvas, #holdCanvas {
+      /* Adjust canvas size for portrait row layout */
+      width: clamp(80px, 15vw, 120px);
+      height: clamp(80px, 15vw, 120px);
+   }
+}
+
+/* Landscape orientation adjustments (applied when height is constrained) */
+@media (orientation: landscape) and (max-height: 600px) {
+  #tetrisCanvas {
+    height: 80vh; /* Use a percentage of viewport height */
+    width: auto; /* Allow width to adjust based on height and aspect ratio */
+    max-width: unset; /* Remove portrait constraint */
+  }
+
+  #game-container {
+    height: 95vh; /* Container takes up most of the height */
+    flex-direction: row; /* Ensure landscape default is row */
+    align-items: flex-start; /* Align items to the top in row layout */
+  }
+
+  #info-panel {
+      margin-left: 10px;
+      margin-top: 0;
+      flex-direction: column; /* Info panel contents in a column */
+      flex-wrap: nowrap; /* Prevent wrapping */
+      justify-content: flex-start; /* Align items to top */
+      width: auto; /* Allow width to be determined by content/constraints */
+      min-width: 120px;
+      max-width: 200px; /* Reapply max-width for landscape */
+      height: 100%; /* Fill height of container */
+  }
+
+  .next-queue, .hold-piece, .stats, .key-controls {
+    flex: 0 0 auto; /* Prevent growing/shrinking in column */
+    width: 100%; /* Take full width of info panel */
+  }
+
+  #nextCanvas, #holdCanvas {
+      width: 180px; /* Revert to standard size */
+      height: 180px;
+      max-width: 100%; /* Ensure they fit in the constrained info panel */
+      max-height: 100%;
+  }
+}
